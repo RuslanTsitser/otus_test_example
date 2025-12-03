@@ -45,22 +45,15 @@ jobs:
 
       - name: List available simulators
         run: xcrun simctl list devices available
-
-      - name: Create iPhone simulator
-        run: |
-          xcrun simctl create "iPhone 15" "iPhone 15" "iOS17.5" || true
-
       - name: Boot simulator
         run: |
-          xcrun simctl boot "iPhone 15" || true
+          xcrun simctl boot "2E8044D5-ECB3-44AF-BB6B-9258C0940FD1" || true
 
       - name: Run integration tests
         run: |
           cd app_flutter_test
           flutter test integration_test
-        env:
-          FLUTTER_TEST_DEVICE: "iPhone 15"
 
       - name: Shutdown simulator
         if: always()
-        run: xcrun simctl shutdown "iPhone 15" || true
+        run: xcrun simctl shutdown "2E8044D5-ECB3-44AF-BB6B-9258C0940FD1" || true
