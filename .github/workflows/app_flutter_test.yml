@@ -13,10 +13,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      # - name: Cache Flutter
-      #   uses: actions/cache@v4.3.0
-      #   with:
-      #     path: |
+      - name: Cache Flutter
+        uses: actions/cache@v4.3.0
+        with:
+          path: flutter
+          key: flutter-key
       - name: Run unit tests
         run: cd app_flutter_test && sh scripts/run_unit_tests.sh
   # run_unit_test:
