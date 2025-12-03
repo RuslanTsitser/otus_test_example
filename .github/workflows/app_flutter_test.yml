@@ -17,7 +17,7 @@ jobs:
         uses: actions/cache@v4.3.0
         with:
           path: /home/runner/work/otus_test_example/otus_test_example/app_flutter_test/flutter/bin/flutter
-          key: flutter-key
+          key: flutter-${{ runner.os }}-${{ hashFiles('app_flutter_test/flutter/bin/flutter') }}
       - name: Run unit tests
         run: cd app_flutter_test && sh scripts/run_unit_tests.sh
 
