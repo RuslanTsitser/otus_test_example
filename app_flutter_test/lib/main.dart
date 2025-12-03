@@ -111,7 +111,6 @@ class CharactersRepositoryImpl implements CharactersRepository {
     final charactersString =
         sharedPreferences.getStringList('characters') ?? [];
     if (charactersString.isNotEmpty) {
-      print('charactersString is not empty');
       return charactersString.map((character) {
         final characterMap = jsonDecode(character);
         return Character(
