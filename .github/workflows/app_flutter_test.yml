@@ -13,10 +13,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable
+      # - name: Cache Flutter
+      #   uses: actions/cache@v4.3.0
+      #   with:
+      #     path: |
       - name: Run unit tests
         run: cd app_flutter_test && sh scripts/run_unit_tests.sh
   # run_unit_test:
