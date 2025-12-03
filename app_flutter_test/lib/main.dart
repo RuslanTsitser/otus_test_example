@@ -58,19 +58,21 @@ class _CharactersListScreenState extends State<CharactersListScreen> {
       listenable: characterChangeNotifier,
       builder: (context, child) => Scaffold(
         appBar: AppBar(title: const Text('Rick and Morty Characters')),
-        body: ListView.builder(
-          itemCount: characterChangeNotifier.characters.length,
-          itemBuilder: (context, index) {
-            return CharacterCard(
-              character: characterChangeNotifier.characters[index],
-              onTap: () {
-                characterChangeNotifier.deleteCharacter(
-                  characterChangeNotifier.characters[index].id,
-                );
-              },
-            );
-          },
-        ),
+        body: characterChangeNotifier.isInitialLoading
+            ? const Center(child: CircularProgressIndicator())
+            : ListView.builder(
+                itemCount: characterChangeNotifier.characters.length,
+                itemBuilder: (context, index) {
+                  return CharacterCard(
+                    character: characterChangeNotifier.characters[index],
+                    onTap: () {
+                      characterChangeNotifier.deleteCharacter(
+                        characterChangeNotifier.characters[index].id,
+                      );
+                    },
+                  );
+                },
+              ),
       ),
     );
   }
@@ -82,9 +84,12 @@ class CharacterChangeNotifier extends ChangeNotifier {
   CharacterChangeNotifier({required this.charactersRepository});
 
   List<Character> characters = [];
+  bool isInitialLoading = true;
 
   Future<void> getCharacters() async {
     final charactersList = await charactersRepository.getCharacters();
+    isInitialLoading = false;
+    notifyListeners();
     characters = charactersList;
     notifyListeners();
   }
@@ -122,7 +127,6 @@ class CharactersRepositoryImpl implements CharactersRepository {
         );
       }).toList();
     }
-    print('charactersString is empty');
     final dio = Dio();
     final response = await dio.get('https://rickandmortyapi.com/api/character');
     final characters = response.data['results'];

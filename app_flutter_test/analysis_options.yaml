@@ -3,3 +3,6 @@ include: package:flutter_lints/flutter.yaml
 linter:
   rules:
     prefer_relative_imports: true
+
+formatter:
+  trailing_commas: preserve
