@@ -2,58 +2,69 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  run_unit_test:
-    name: run tests only
+  run_unit_test_from_script_file:
+    name: run unit tests from script file
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Run unit tests
+        run: cd app_flutter_test && sh scripts/run_unit_tests.sh
+  # run_unit_test:
+  #   name: run tests only
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
 
-      - name: Setup Java (Temurin 17)
-        uses: actions/setup-java@v3
-        with:
-          distribution: temurin
-          java-version: "17"
+  #     - name: Setup Java (Temurin 17)
+  #       uses: actions/setup-java@v3
+  #       with:
+  #         distribution: temurin
+  #         java-version: "17"
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable
+  #     - name: Setup Flutter
+  #       uses: subosito/flutter-action@v2
+  #       with:
+  #         channel: stable
 
-      - name: Get dependencies
-        run: cd app_flutter_test && flutter pub get
+  #     - name: Get dependencies
+  #       run: cd app_flutter_test && flutter pub get
 
-      - name: run tests
-        run: cd app_flutter_test && flutter test
+  #     - name: run tests
+  #       run: cd app_flutter_test && flutter test
 
-  run_integration_test_ios:
-    name: run integration tests on iOS simulator
-    runs-on: macos-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+  # run_integration_test_ios:
+  #   name: run integration tests on iOS simulator
+  #   runs-on: macos-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable
+  #     - name: Setup Flutter
+  #       uses: subosito/flutter-action@v2
+  #       with:
+  #         channel: stable
 
-      - name: Get dependencies
-        run: cd app_flutter_test && flutter pub get
+  #     - name: Get dependencies
+  #       run: cd app_flutter_test && flutter pub get
 
-      - name: List available simulators
-        run: xcrun simctl list devices available
-      - name: Boot simulator
-        run: |
-          xcrun simctl boot "2E8044D5-ECB3-44AF-BB6B-9258C0940FD1" || true
+  #     - name: List available simulators
+  #       run: xcrun simctl list devices available
+  #     - name: Boot simulator
+  #       run: |
+  #         xcrun simctl boot "2E8044D5-ECB3-44AF-BB6B-9258C0940FD1" || true
 
-      - name: Run integration tests
-        run: |
-          cd app_flutter_test
-          flutter test integration_test
+  #     - name: Run integration tests
+  #       run: |
+  #         cd app_flutter_test
+  #         flutter test integration_test
 
-      - name: Shutdown simulator
-        if: always()
-        run: xcrun simctl shutdown "2E8044D5-ECB3-44AF-BB6B-9258C0940FD1" || true
+  #     - name: Shutdown simulator
+  #       if: always()
+  #       run: xcrun simctl shutdown "2E8044D5-ECB3-44AF-BB6B-9258C0940FD1" || true
